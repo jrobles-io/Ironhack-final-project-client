@@ -4,6 +4,9 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import SignupPage from "./pages/SignupPage";
 import LoginPage from "./pages/LoginPage";
+import EventListPage from "./pages/EventListPage";
+import EventDetailsPage from "./pages/EventDetailsPage";
+import EditEventPage from "./pages/EditEventPage";
 
 function App() {
   const getToken = () => {
@@ -27,6 +30,10 @@ function App() {
         <Route exact path="/" element={<HomePage />} />
 
         <Route element={<LoggedIn />}>
+
+          <Route exact path="/events" element={<EventListPage />} />
+          <Route exact path="/events/edit/:eventId" element={<EditEventPage />} />           
+          <Route exact path="/events/:eventId" element={<EventDetailsPage />} />
 
 
 
