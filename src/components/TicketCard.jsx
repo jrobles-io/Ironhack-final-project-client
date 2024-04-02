@@ -1,7 +1,22 @@
 import { useState } from 'react';
+import { get, post, put } from "../services/authService";
+import { useCartContext } from '../context/cart.context';
 
-function TicketCard({ title, description, amount, price }) {
+function TicketCard({ title, description, amount, price, _id }) {
   const [counter, setCounter] = useState(0);
+  const cartContext = useCartContext();
+
+  const handleAddToCart = (e) => {
+    const requestBody = { counter, _id, title };
+    //cartContext.addTicket('/cart/update', requestBody)
+    cartContext.addTicket(requestBody)
+      .then((response) => {
+        console.log('Added ticket to cart --->', requestBody)
+        setCounter(0);
+        console.log('cart context --->', cartContext);
+      })
+      .catch((error) => console.log('Add ticket to cart failed', error));
+  };
 
     return (
       <div className="TicketCard card">
@@ -15,7 +30,7 @@ function TicketCard({ title, description, amount, price }) {
         <button onClick={() => {if (counter > 0) setCounter(counter - 1)}}>-</button>
           <strong>{counter}</strong>
         <button onClick={() => {if (counter < amount && counter < 8) setCounter(counter + 1)}}>+</button>  
-        <button disabled={counter === 0 ? true : false}>Add to cart</button>  
+        <button disabled={counter === 0 ? true : false} onClick={handleAddToCart}>Add to cart</button>  
       </div>
     );
   }
