@@ -21,9 +21,13 @@ function EventDetailsPage(props) {
       .catch((error) => console.log(error));
   };
 
+  
+  
   useEffect(() => {
     getEvent();
+
   }, []);
+  
 
   return (
     <div className="EventDetails">
