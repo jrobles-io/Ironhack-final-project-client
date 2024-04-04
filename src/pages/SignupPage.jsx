@@ -44,49 +44,71 @@ function SignupPage() {
         console.log(err);
         setErrorMessage(err.response.data.message);
         setNewUser({
-            email: "",
-            password: "",
-            name: "",
-          })
+          email: "",
+          password: "",
+          name: "",
+        });
       });
   };
 
   return (
-    <div className="SignupPage">
-      <h1>Sign Up</h1>
+    <div className="flex flex-col justify-center items-center h-full p-10 bg-gray-900 text-white min-h-screen">
+      <h1 className="text-2xl font-bold mb-8">Sign Up</h1>
 
-      <form onSubmit={handleSignupSubmit}>
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          value={newUser.email}
-          onChange={handleTextChange}
-        />
+      <form className="w-full max-w-xs space-y-4" onSubmit={handleSignupSubmit}>
+        <div>
+          <label className="block text-gray-300 text-sm font-bold mb-2">
+            Email:
+          </label>
+          <input
+            className="w-full px-3 py-2 border border-gray-600 rounded shadow appearance-none text-gray-300 bg-gray-800 leading-tight focus:outline-none focus:shadow-outline"
+            type="email"
+            name="email"
+            value={newUser.email}
+            onChange={handleTextChange}
+          />
+        </div>
 
-        <label>Password:</label>
-        <input
-          type="password"
-          name="password"
-          value={newUser.password}
-          onChange={handleTextChange}
-        />
+        <div>
+          <label className="block text-gray-300 text-sm font-bold mb-2">
+            Password:
+          </label>
+          <input
+            className="w-full px-3 py-2 border border-gray-600 rounded shadow appearance-none text-gray-300 bg-gray-800 leading-tight focus:outline-none focus:shadow-outline"
+            type="password"
+            name="password"
+            value={newUser.password}
+            onChange={handleTextChange}
+          />
+        </div>
 
-        <label>Name:</label>
-        <input
-          type="text"
-          name="name"
-          value={newUser.name}
-          onChange={handleTextChange}
-        />
+        <div>
+          <label className="block text-gray-300 text-sm font-bold mb-2">
+            Username:
+          </label>
+          <input
+            className="w-full px-3 py-2 border border-gray-600 rounded shadow appearance-none text-gray-300 bg-gray-800 leading-tight focus:outline-none focus:shadow-outline"
+            type="text"
+            name="name"
+            value={newUser.name}
+            onChange={handleTextChange}
+          />
+        </div>
 
-        <button type="submit">Sign Up</button>
+        <button
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Sign Up
+        </button>
       </form>
 
-      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {errorMessage && <p className="text-red-400 mt-4">{errorMessage}</p>}
 
-      <p>Already have account?</p>
-      <Link to={"/login"}> Login</Link>
+      <p className="mt-6 text-gray-300">Already have an account?</p>
+      <Link to={"/login"} className="text-blue-400 hover:text-blue-600">
+        Login
+      </Link>
     </div>
   );
 }

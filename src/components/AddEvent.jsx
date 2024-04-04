@@ -2,25 +2,27 @@ import { useState } from "react";
 import { post } from "../services/authService";
 import { fileChange } from "../services/imageUpload";
 
-function AddEvent({ refreshEvents }) {
+function AddEvent({ refreshEvents, closeModal }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
-  const [images, setImages] = useState("");
+  const [image, setImage] = useState("");
   const [disabled, setDisabled] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { title, description, date };
+    const requestBody = { title, description, date, image };
 
     post("/events", requestBody)
       .then((response) => {
         // Reset the state
+        setImage('')
         setTitle("");
         setDescription("");
         setDate("");
         refreshEvents();
+        closeModal();
         console.log();
       })
       .catch((error) => console.log(error));
@@ -30,53 +32,105 @@ function AddEvent({ refreshEvents }) {
     setDisabled(true);
 
     fileChange(e)
-      .then((response) => {
-        setImages(response.data.image);
-        setDisabled(false);
-      });
+    .then((response) => {
+      console.log("This is the cloudinary response ===>", response.data)
+      setImage(response.data.image);
+      setDisabled(false);
+    })
+    .catch((err) => {
+      console.log("Error adding image", err)
+      setDisabled(false)
+    })
   };
 
   return (
-    <div className="AddEvent">
-      <h3>Add Event</h3>
+    <div className="bg-gray-900 shadow-md rounded-lg p-8 mb-6 w-96">
+      <h3 className="text-xl font-semibold mb-4 text-white">Add Event</h3>
 
-      <form onSubmit={handleSubmit}>
-        <label>Title:</label>
-        <input
-          type="text"
-          name="title"
-          required
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-300"
+          >
+            Title:
+          </label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            required
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
 
-        <label>Description:</label>
-        <textarea
-          type="text"
-          name="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+        <div>
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-300"
+          >
+            Description:
+          </label>
+          <textarea
+            name="description"
+            id="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
 
-        <label>Date:</label>
-        <input
-          type="date"
-          name="date"
-          required
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-        />
+        <div>
+          <label
+            htmlFor="date"
+            className="block text-sm font-medium text-gray-300"
+          >
+            Date:
+          </label>
+          <input
+            type="date"
+            name="date"
+            id="date"
+            required
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
 
-        <label>Image:</label>
-        <input
-          type="file"
-          className="form-control"
-          id="images"
-          name="images"
-          onChange={handleImages}
-        />
+        <div>
+          <label
+            htmlFor="images"
+            className="block text-sm font-medium text-gray-300"
+          >
+            Image:
+          </label>
+          <input
+            type="file"
+            id="images"
+            name="images"
+            onChange={handleImages}
+            className="mt-1 block w-full px-3 py-1.5 text-base font-normal text-gray-300 bg-gray-800 border border-gray-600 rounded transition ease-in-out m-0 focus:text-gray-300 focus:bg-gray-800 focus:border-blue-600 focus:outline-none"
+          />
+        </div>
 
-        <button disabled={disabled} type="submit">Submit</button>
+        <div className="flex justify-between space-x-2 mt-4">
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Add Event
+        </button>
+        <button
+          type="button" // Important to specify type="button" to prevent form submission
+          onClick={closeModal}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Cancel
+        </button>
+      </div>
       </form>
     </div>
   );
