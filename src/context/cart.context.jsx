@@ -2,79 +2,76 @@
 
 import { useEffect, useState, useContext, createContext } from "react";
 import { get, post, put } from "../services/authService";
-import { AuthContext } from "./auth.context"
-
-
+import { AuthContext } from "./auth.context";
 
 const CartContext = createContext();
 
 function CartProvider({ children }) {
   const [cart, setCart] = useState(null);
-  const { user } = useContext(AuthContext); 
-//   const router = useRouter();
+  const { user } = useContext(AuthContext);
+  //   const router = useRouter();
 
-const getCartData = () => {
-  get('/cart')
-  .then((cart) => {
-    console.log("Cart ===>", cart.data)
-    setCart(cart.data);
-  })
-  .catch ((error) => {
-    console.log(error);
-  })
-}
+  const getCartData = () => {
+    get("/cart")
+      .then((cart) => {
+        console.log("Cart ===>", cart.data);
+        setCart(cart.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const addTicket = (ticket) => {
     // if (!user) return router.push("/auth/login");
-    console.log('ticket --->', ticket);
+    console.log("ticket --->", ticket);
     // console.log('cart ----->', cart[0])
     !cart
-      ? 
-      post('/cart', ticket)
-      .then((cart) => {
-        console.log('cart 2 --->', cart.data)
-        setCart(cart.data);
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-        : put('/cart/update', ticket)
-        .then((cart) => {
-          console.log('cart 3 --->', cart.data)
-          setCart(cart.data);
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      ? post("/cart", ticket)
+          .then((cart) => {
+            console.log("cart 2 --->", cart.data);
+            setCart(cart.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          })
+      : put("/cart/update", ticket)
+          .then((cart) => {
+            console.log("cart 3 --->", cart.data);
+            setCart(cart.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
   };
 
   const removeTicket = (ticket) => {
-    let thisCart = {...cart}
-    // let thisCart = {...cart._doc}
-    thisCart.tickets = cart.tickets.filter((element) => element._id !== ticket._id)
-    console.log("This cart after removing", )
+    // console.log("ticket to delete --->", ticket);
+    let thisCart = { ...cart };
+    // console.log("thisCart --->", thisCart.tickets);
+    thisCart.tickets = thisCart.tickets.filter(
+      (element) => element.ticket._id !== ticket._id
+    );
+    console.log("This cart after removing", thisCart);
     setCart(thisCart);
-    put('/cart/update/tickets', thisCart)
+    put("/cart/update/tickets", thisCart)
       .then((response) => {
-        console.log("This is the new cart", response.data)
-        getCartData()
+        console.log("This is the new cart", response.data);
+        getCartData();
       })
       .catch((err) => {
-        console.log(err)
-      })
-      
+        console.log(err);
+      });
   };
+  // console.log('element.ticket --->', element.ticket._id);
+  // console.log('ticket._id --->', ticket._id);
 
-  // const increaseQuantity = (ticket) => {
-  //   setCart((prev) => ({
-  //     ...prev,
-  //     tickets: prev.tickets.map((element) => {
-  //       return element._id === ticket._id
-  //         ? { ...element, quantity: (element.quantity += 1) }
-  //         : element;
-  //     }),
-  //   }));
-  // };
+  const decreaseAmount = () => {
+    console.log(cart);
+    cart.tickets.forEach((ticket) => {
+      put()
+    })
+  };
 
   // const decreaseQuantity = (ticket) => {
   //   const ticketToDecrease = cart.tickets.find((element) => element._id === ticket._id);
@@ -89,11 +86,12 @@ const getCartData = () => {
   //       }));
   // };
 
-
-
-  useEffect(() => () => {
-    getCartData()
-}, []);
+  useEffect(
+    () => () => {
+      getCartData();
+    },
+    []
+  );
 
   return (
     <CartContext.Provider
@@ -102,7 +100,7 @@ const getCartData = () => {
         setCart,
         removeTicket,
         // increaseQuantity,
-        // decreaseQuantity,
+        decreaseAmount,
         addTicket,
       }}
     >
@@ -111,4 +109,4 @@ const getCartData = () => {
   );
 }
 
-export { CartContext, CartProvider }
+export { CartContext, CartProvider };

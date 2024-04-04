@@ -5,23 +5,82 @@ import { CartContext } from "../context/cart.context";
 
 import { get } from "../services/authService";
 import AddTicket from "../components/AddTicket";
-import TicketCard from "../components/TicketCard";
+import TicketCheckoutCard from "../components/TicketCheckoutCard";
 
 function CheckoutPage(props) {
-  // const [cart, setCart] = useState(null);
   const { user } = useContext(AuthContext);
-  const { cart, getCartData, setCart, removeTicket, addTicket } = useContext(CartContext);
+  const [total, setTotal] = useState(0);
+  const { cart, getCartData, setCart, removeTicket, addTicket, decreaseAmount } =
+    useContext(CartContext);
 
-//   console.log('tickets ---->', cart.tickets[0].ticket)
+  useEffect(() => {
+    const newTotal = cart
+      ? cart.tickets.reduce((acc, ticket) => {
+          return acc + ticket.quantity * ticket.ticket.price;
+        }, 0)
+      : 0;
+
+    setTotal(newTotal);
+  }, [cart]);
+
+//   console.log("total --->", total);
+  const handleSubmit = () => {
+    decreaseAmount();
+  }
+
   return (
-    <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 justify-center">
-        {cart &&
-          cart.tickets.map((ticket) => (
-            <TicketCard key={cart.tickets._id} {...ticket.ticket} />
-          ))}
-      </div>
-    </div>
+<div className="flex flex-col items-center bg-black min-h-screen p-10">
+  <div className="w-full max-w-4xl mt-8">
+    <table className="w-full text-sm text-gray-400">
+      <thead className="text-xs uppercase bg-gray-800 text-gray-400">
+        <tr>
+          <th scope="col" className="py-3 px-6">
+            Ticket Title
+          </th>
+          <th scope="col" className="py-3 px-6 text-center">
+            Quantity
+          </th>
+          <th scope="col" className="py-3 px-6 text-right">
+            Price
+          </th>
+          <th scope="col" className="py-3 px-6 text-right">
+            Total
+          </th>
+          <th scope="col" className="py-3 px-6 text-center">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      {cart &&
+              cart.tickets.map((ticket) => (
+                <TicketCheckoutCard
+                  key={ticket._id}
+                  quantity={ticket.quantity}
+                  ticket={ticket.ticket}
+                  removeTicket={removeTicket}
+                />
+              ))}
+      </tbody>
+      <tfoot className="text-white">
+        <tr>
+          <td colSpan="3" className="text-right font-bold">
+            Total:
+          </td>
+          <td className="text-right">{`$ ${total}`}</td>
+          <td></td> {/* Empty cell for the actions column */}
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  {/* <Link to={`/`}> */}
+    <button onClick={() => handleSubmit()}className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+      Continue to checkout
+    </button>
+  {/* </Link> */}
+</div>
+
+
   );
 }
 
