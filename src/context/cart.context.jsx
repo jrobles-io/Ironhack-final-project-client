@@ -65,12 +65,19 @@ function CartProvider({ children }) {
   };
   // console.log('element.ticket --->', element.ticket._id);
   // console.log('ticket._id --->', ticket._id);
-
+  
   const decreaseAmount = () => {
     console.log(cart);
-    cart.tickets.forEach((ticket) => {
-      put()
+    cart.tickets.forEach(async (ticket) => {
+      await put(`/tickets/${ticket.ticket._id}`, {quantity: ticket.quantity})
+        .then((res) =>  {
+          console.log(res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     })
+
   };
 
   // const decreaseQuantity = (ticket) => {
@@ -86,12 +93,12 @@ function CartProvider({ children }) {
   //       }));
   // };
 
-  useEffect(
-    () => () => {
-      getCartData();
-    },
-    []
-  );
+  useEffect(() => {
+
+    getCartData();
+  }, [user])
+
+
 
   return (
     <CartContext.Provider

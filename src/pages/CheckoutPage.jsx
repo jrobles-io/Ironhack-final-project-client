@@ -10,6 +10,7 @@ import TicketCheckoutCard from "../components/TicketCheckoutCard";
 function CheckoutPage(props) {
   const { user } = useContext(AuthContext);
   const [total, setTotal] = useState(0);
+  const [clearedCart, setClearedCart] = useState(null)
   const { cart, getCartData, setCart, removeTicket, addTicket, decreaseAmount } =
     useContext(CartContext);
 
@@ -26,7 +27,12 @@ function CheckoutPage(props) {
 //   console.log("total --->", total);
   const handleSubmit = () => {
     decreaseAmount();
-  }
+    // get()
+    //.then((response.data) => {
+      // setClearedCart(response.data)
+      // getCartData()
+  //   })
+   }
 
   return (
 <div className="flex flex-col items-center bg-black min-h-screen p-10">
