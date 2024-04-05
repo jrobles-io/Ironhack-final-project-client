@@ -67,7 +67,7 @@ function CartProvider({ children }) {
   // console.log('ticket._id --->', ticket._id);
   
   const decreaseAmount = () => {
-    console.log(cart);
+    // console.log(cart);
     cart.tickets.forEach(async (ticket) => {
       await put(`/tickets/${ticket.ticket._id}`, {quantity: ticket.quantity})
         .then((res) =>  {
@@ -109,6 +109,7 @@ function CartProvider({ children }) {
         // increaseQuantity,
         decreaseAmount,
         addTicket,
+        getCartData,
       }}
     >
       {children}

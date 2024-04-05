@@ -47,16 +47,16 @@ function EventDetailsPage(props) {
 
   <div className="mt-8 flex gap-4">
     <Link to="/events">
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back to events</button>
+      <button className="bg-[#25484E] hover:bg-[#54AC8E] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Back to events</button>
     </Link>
     
     <Link to="/checkout">
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Checkout</button>
+      <button className="bg-[#25484E] hover:bg-[#54AC8E] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Checkout</button>
     </Link>
     
     {user && event && user._id === event.owner && (
       <Link to={`/events/edit/${eventId}`}>
-        <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Edit Event</button>
+        <button className="bg-[#25484E] hover:bg-[#54AC8E] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Edit Event</button>
       </Link>
     )}
   </div>

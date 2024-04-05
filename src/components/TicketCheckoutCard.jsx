@@ -21,11 +21,22 @@ function TicketCheckoutCard({ quantity, ticket }) {
   //   console.log('total --->', total)
 
   return (
-    <tr className="text-white">
+    <tr className="text-white bg-gray-900 ">
       <td className="p-4">{ticket.title}</td>
       <td className="p-4 text-center">{quantity}</td>
-      <td className="p-4 text-right">{`$${ticket.price}`}</td>
-      <td className="p-4 text-right">{`$${ticket.price * quantity}`}</td>
+      <td className="p-4 text-right">
+        {new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(ticket.price)}
+      </td>
+      <td className="p-4 text-right">
+        {new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "USD",
+        }).format(ticket.price * quantity)}
+      </td>
+
       <td className="p-4 text-center">
         <button
           onClick={() => removeTicket(ticket)}

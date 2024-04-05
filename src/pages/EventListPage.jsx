@@ -30,7 +30,7 @@ function EventListPage() {
       {user && user.type === 'ADMIN' && (
         <button
           onClick={() => setShowModal(true)}
-          className="mb-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className="mb-8 bg-[#25484E] hover:bg-[#54AC8E] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Add Event
         </button>

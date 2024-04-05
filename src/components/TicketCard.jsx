@@ -29,7 +29,8 @@ function TicketCard({ title, description, amount, price, _id }) {
       </div>
       <div className="flex justify-between items-center mb-4">
         <h4 className="font-medium">Price:</h4>
-        <p>{`$ ${price}`}</p>
+        <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price)}</p>
+
       </div>
 
       <div className="flex items-center space-x-2 mb-4">
