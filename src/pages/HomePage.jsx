@@ -1,4 +1,4 @@
-import splashImage from '../assets/splash-page.png'
+import splashImage from '../assets/splash-page.webp'
 
 function HomePage() {
   const sectionStyle = {
