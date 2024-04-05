@@ -22,16 +22,16 @@ function TicketCheckoutCard({ quantity, ticket }) {
 
   return (
     <tr className="text-white bg-gray-900 ">
-      <td className="p-4">{ticket.title}</td>
+      <td className="p-4">{ticket && ticket.title}</td>
       <td className="p-4 text-center">{quantity}</td>
       <td className="p-4 text-right">
-        {new Intl.NumberFormat("en-US", {
+        {ticket && new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
         }).format(ticket.price)}
       </td>
       <td className="p-4 text-right">
-        {new Intl.NumberFormat("en-US", {
+        {ticket && new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: "USD",
         }).format(ticket.price * quantity)}

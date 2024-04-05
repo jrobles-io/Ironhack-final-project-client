@@ -31,7 +31,13 @@ function EventDetailsPage(props) {
     <>
       <h1 className="text-4xl font-bold text-white mb-2 text-center">{event.title}</h1>
       <p className="text-gray-300 text-lg mb-2 text-center">{event.description}</p>
+      <p className="text-gray-300 text-lg mb-2 text-center">{`${event.location} 📍`}</p>
       <p className="text-gray-500 mb-6 text-center">{new Date(event.date).toLocaleDateString('en-US', { timeZone: 'UTC' })}</p>
+      {user && event && user._id !== event.owner && (
+  <div className="w-full flex justify-center items-center">
+    <img src={event.image} alt={event.title} className="h-full object-scale-down" />
+  </div>
+)}
     </>
   )}
 

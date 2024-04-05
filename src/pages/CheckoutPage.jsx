@@ -1,32 +1,27 @@
 import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../context/auth.context";
-import { useParams, Link } from "react-router-dom";
 import { CartContext } from "../context/cart.context";
+import Confetti from "react-confetti";
 
 import { get } from "../services/authService";
-import AddTicket from "../components/AddTicket";
 import TicketCheckoutCard from "../components/TicketCheckoutCard";
 
-function CheckoutPage(props) {
-  const { user } = useContext(AuthContext);
+function CheckoutPage() {
   const [total, setTotal] = useState(0);
   const [clearedCart, setClearedCart] = useState(null);
-  const {
-    cart,
-    setCart,
-    getCartData,
-    removeTicket,
-    addTicket,
-    decreaseAmount,
-  } = useContext(CartContext);
+  const { cart, getCartData, removeTicket, decreaseAmount } =
+    useContext(CartContext);
 
   useEffect(() => {
+    getCartData();
+  }, []);
+
+  useEffect(() => {
+    // Recalculate the total whenever the cart data changes
     const newTotal = cart
       ? cart.tickets.reduce((acc, ticket) => {
           return acc + ticket.quantity * ticket.ticket.price;
         }, 0)
       : 0;
-
     setTotal(newTotal);
   }, [cart]);
 
@@ -108,18 +103,24 @@ function CheckoutPage(props) {
       )}
 
       {clearedCart && (
-        <div className="fixed inset-0 text-center bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-xl text-white max-w-md mx-auto">
-            <h3 className="text-lg font-bold mb-4 text-center">
-              Congratulations on your purchase!
-            </h3>
-            {clearedCart.tickets.map((ticket, index) => (
-              <div key={index} className="mb-2">
-                <h2 className="text-md">{ticket.ticket.title}</h2>
-              </div>
-            ))}
+        <>
+          <Confetti width={window.innerWidth} height={window.innerHeight} />
+          <div className="fixed inset-0 text-center bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-gray-800 p-6 rounded-lg shadow-xl text-white max-w-md mx-auto">
+              <h3 className="text-lg font-bold mb-4 text-center">
+                Congratulations on your purchase!
+              </h3>
+              {clearedCart.tickets.map((ticket, index) => (
+                <div key={index} className="mb-2 flex justify-between">
+                  <span className="text-md whitespace-nowrap text-left">
+                    {ticket.ticket.title}
+                  </span>
+                  <span className="text-md text-right">{`x${ticket.quantity}`}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

@@ -4,33 +4,39 @@ import { CartContext } from "../context/cart.context";
 
 function TicketCard({ title, description, amount, price, _id }) {
   const [counter, setCounter] = useState(0);
-  const { cart, addTicket } = useContext(CartContext)
+  const { cart, addTicket } = useContext(CartContext);
 
   const handleAddToCart = (e) => {
     const requestBody = { counter, _id };
     //put('/cart/update', requestBody)
-        addTicket(requestBody)
+    addTicket(requestBody);
 
-        setCounter(0);
-        console.log("cart context --->", cart);
-
+    setCounter(0);
+    console.log("cart context --->", cart);
   };
 
   return (
     <div className="bg-gray-900 shadow-md rounded-lg p-6 mb-4 text-white">
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <h4 className="font-medium">Description:</h4>
-      <p className="mb-2">{description}</p>
+      <h3 className="text-lg font-semibold mb-2 min-h-[56px] text-center">{title}</h3>
+      <h4 className="font-bold">Description:</h4>
+      <p className="mb-2 text-gray-500 min-h-[56px]">{description}</p>
 
-      {/* Inline Amount and Price */}
       <div className="flex justify-between items-center mb-2">
-        <h4 className="font-medium">Amount:</h4>
-        <p>{amount}</p>
+        <h4 className="font-bold">Amount:</h4>
+        <p
+          className={`${amount === 0 ? "bg-red-500 text-white font-bold py-1 px-3 rounded" : ""}`}
+        >
+          {amount === 0 ? "SOLD OUT" : amount.toLocaleString('en-US')}
+        </p>
       </div>
       <div className="flex justify-between items-center mb-4">
-        <h4 className="font-medium">Price:</h4>
-        <p>{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price)}</p>
-
+        <h4 className="font-bold">Price:</h4>
+        <p>
+          {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: "USD",
+          }).format(price)}
+        </p>
       </div>
 
       <div className="flex items-center space-x-2 mb-4">
@@ -47,7 +53,7 @@ function TicketCard({ title, description, amount, price, _id }) {
 
         <button
           onClick={() => {
-            if (counter < amount && counter < 8) setCounter(counter + 1);
+            if (counter < amount && counter < 10) setCounter(counter + 1);
           }}
           className="bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
         >

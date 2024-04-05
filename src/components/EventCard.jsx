@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 // We are deconstructing props object directly in the parentheses of the function
-function EventCard ( { title, description, _id, image } ) {
+function EventCard ( { title, description, location, date, _id, image } ) {
   
   return (
 <div className="bg-gray-900 rounded-lg shadow-lg overflow-hidden transition duration-300 hover:shadow-xl">
@@ -11,6 +11,9 @@ function EventCard ( { title, description, _id, image } ) {
     <div className="p-5">
       <h3 className="text-lg font-semibold mb-2 text-white">{title}</h3>
       <p className="text-gray-400 text-sm truncate">{description}</p>
+      <p className="text-gray-400 text-sm truncate">{`${location} 📍`}</p>
+      <p className="text-gray-400 text-sm truncate">{new Date(date).toLocaleDateString('en-US', { timeZone: 'UTC' })}</p>
+
     </div>
   </Link>
 </div>

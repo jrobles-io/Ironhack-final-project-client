@@ -5,6 +5,7 @@ import { fileChange } from "../services/imageUpload";
 function AddEvent({ refreshEvents, closeModal }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [location, setLocation] = useState(""); 
   const [date, setDate] = useState("");
   const [image, setImage] = useState("");
   const [disabled, setDisabled] = useState(false);
@@ -12,7 +13,7 @@ function AddEvent({ refreshEvents, closeModal }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const requestBody = { title, description, date, image };
+    const requestBody = { title, description,location, date, image };
 
     post("/events", requestBody)
       .then((response) => {
@@ -20,10 +21,10 @@ function AddEvent({ refreshEvents, closeModal }) {
         setImage('')
         setTitle("");
         setDescription("");
+        setLocation("");
         setDate("");
         refreshEvents();
         closeModal();
-        console.log();
       })
       .catch((error) => console.log(error));
   };
@@ -84,6 +85,22 @@ function AddEvent({ refreshEvents, closeModal }) {
 
         <div>
           <label
+            htmlFor="location"
+            className="block text-sm font-medium text-gray-300"
+          >
+            Location:
+          </label>
+          <input
+            name="location"
+            id="location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-gray-600 bg-gray-800 text-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <div>
+          <label
             htmlFor="date"
             className="block text-sm font-medium text-gray-300"
           >
@@ -119,7 +136,8 @@ function AddEvent({ refreshEvents, closeModal }) {
         <div className="flex justify-between space-x-2 mt-4">
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          disabled={disabled}
+          className="bg-[#25484E] hover:bg-[#54AC8E] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
           Add Event
         </button>
